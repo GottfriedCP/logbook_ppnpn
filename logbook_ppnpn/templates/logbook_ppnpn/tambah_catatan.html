@@ -1,0 +1,63 @@
+{% extends 'BASE.html' %}
+{% load static django_bootstrap5 %}
+
+{% block body_bl %}
+<div class="container">
+    <div class="mb-4">
+        <table class="table table-sm table-borderless" style="max-width: 480px;">
+            <tbody>
+                <tr>
+                    <th>Nama</th>
+                    <td>: {{ ppnpn.nama }}</td>
+                </tr>
+                <tr>
+                    <th>NI PPNPN</th>
+                    <td>: <code>{{ ppnpn.nomor_induk }}</code></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <form method="POST" action="{% if ubah %}{% url 'logbook_ppnpn:ubah_catatan' catatan_id %}{% else %}{% url 'logbook_ppnpn:buat_catatan' %}{% endif %}">
+        <h1 class="fs-2">{% if ubah %}Ubah{% else %}Tambah{% endif %} Catatan Harian PPNPN</h1>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <div class=" d-grid gap-2">
+            <button type="submit" class="mt-3 btn btn-kemkes">Simpan</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block body_add_bl %}
+<script>
+    function initCreateForm() {
+        $("#id_tanggal").datepicker({
+            dateFormat: "dd-mm-yy",
+            closeText: "Tutup",
+            prevText: "Mundur",
+            nextText: "Maju",
+            currentText: "Hari ini",
+            monthNames: ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember"],
+            monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
+                "Jul", "Agus", "Sep", "Okt", "Nop", "Des"],
+            dayNames: ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
+            dayNamesShort: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
+            dayNamesMin: ["Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb"],
+            weekHeader: "Mg",
+            firstDay: 0,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ""
+        });
+        $('label.form-label').css('font-weight', '600');
+        $('#id_tautan_dakung').attr('placeholder', 'Contoh: https://drive.google.com/file/d/.......');
+        $('#id_rincian').attr('rows', '5');
+        $('#id_progress').attr('rows', '3');
+        $('#id_masalah_hambatan').attr('rows', '3');
+    }
+    $(document).ready(function () {
+        initCreateForm();
+    });
+</script>
+{% endblock %}

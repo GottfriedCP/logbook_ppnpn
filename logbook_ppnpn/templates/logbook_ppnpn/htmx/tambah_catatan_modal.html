@@ -1,0 +1,28 @@
+{% load django_bootstrap5 %}
+<div class="modal fade" id="tambahCatatanModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Catatan Kegiatan Harian</h1>
+                <a class="btn-close" role="button" href="{% url 'logbook_ppnpn:home' %}"></a>
+            </div>
+            <form method="POST" action="{% url 'logbook_ppnpn:buat_catatan' %}">
+                <div class="modal-body mb-3">
+                    {% csrf_token %}
+                    {% bootstrap_form catatan_form %}
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-secondary" role="button" href="{% url 'logbook_ppnpn:home' %}">Batal</a>
+                    <button type="submit" class="btn btn-kemkes">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    htmx.onLoad(function(elt){
+        initCreateForm();
+        const tambahCatatanModal = new bootstrap.Modal(document.getElementById('tambahCatatanModal'));
+        tambahCatatanModal.show();
+    })
+</script>

@@ -1,0 +1,106 @@
+{% extends 'BASE.html' %}
+{% load static django_bootstrap5 %}
+
+{% block body_bl %}
+<div class="container">
+    {% bootstrap_messages %}
+    <h1 class="fs-2">Daftar Catatan Harian Menunggu Validasi</h1>
+
+    {% if catatans %}
+    <div class="div-table" style="overflow-x: auto;">
+        <table id="datatable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Tanggal (y-m-d)</th>
+                    <th>Rincian</th>
+                    {% comment %}
+                    <th>Progress</th>
+                    <th>Masalah/Hambatan</th>
+                    {% endcomment %}
+                    <th>Link Bukti</th>
+                    <th>Tindakan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cat in catatans %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ cat.nama_ppnpn }}</td>
+                    <td>{{ cat.tanggal|date:'Y-m-d' }}</td>
+                    <td style="font-size: 80%;">
+                        {{ cat.rincian }}<br>
+                        <b>Progress: </b>{{ cat.progress|default:'-' }}<br>
+                        <b>Masalah/Hambatan: </b>{{ cat.masalah_hambatan|default:'-' }}
+                    </td>
+                    {% comment %}
+                    <td>{{ cat.progress }}</td>
+                    <td>{{ cat.masalah_hambatan }}</td>
+                    {% endcomment %}
+                    <td>
+                        <a class="btn btn-sm btn-link" href="{{ cat.tautan_dakung }}">Lihat</a>
+                    </td>
+                    <td>
+                        <div>
+                            <div class="d-flex flex-wrap">
+                                <form method="POST" action="{% url 'logbook_ppnpn:validasi' cat.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-kemkes" type="submit">Validasi</button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    Belum ada Catatan Harian untuk divalidasi
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block body_add_bl %}
+<script>
+    $(document).ready(function () {
+        $('#datatable').DataTable({
+            pageLength: 50,
+            // lengthMenu: [100, 50, 25, 10],
+            // order: [[0, asc]],
+            searching: true,
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json',
+            },
+            paging: true,
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": -1 // -1 refers to the last column
+                }
+            ]
+            // initComplete: function () {
+            //     this.api()
+            //         .columns()
+            //         .every(function () {
+            //             let column = this;
+            //             let title = column.footer().textContent;
+
+            //             // Create input element
+            //             let input = document.createElement('input');
+            //             input.placeholder = title;
+            //             column.footer().replaceChildren(input);
+
+            //             // Event listener for user input
+            //             input.addEventListener('keyup', () => {
+            //                 if (column.search() !== this.value) {
+            //                     column.search(input.value).draw();
+            //                 }
+            //             });
+            //         });
+            // }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'BASE.html' %}
+{% load static django_bootstrap5 %}
+
+{% block body_bl %}
+<div class="container">
+    {% bootstrap_messages %}
+    <div class="mb-4">
+        <table class="table table-sm table-borderless" style="max-width: 480px;">
+            <tbody>
+                <tr>
+                    <th>Nama</th>
+                    <td>: {{ ppnpn.nama }}</td>
+                </tr>
+                <tr>
+                    <th>NI PPNPN</th>
+                    <td>: <code>{{ ppnpn.nomor_induk }}</code></td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-kemkes" role="button" href="{% url 'logbook_ppnpn:buat_catatan' %}">
+            Tambah Catatan
+        </a>
+    </div>
+
+    {% if catatans %}
+    <div class="div-table" style="overflow-x: auto;">
+        <table id="datatable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Tanggal <span style="font-size: 70%;">(y-m-d)</span></th>
+                    <th>Rincian</th>
+                    <th>Link Bukti</th>
+                    <th>Tindakan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cat in catatans %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ cat.tanggal|date:'Y-m-d' }}</td>
+                    <td style="font-size: 80%;">
+                        {{ cat.rincian }}<br>
+                        <b>Progress: </b>{{ cat.progress|default:'-' }}<br>
+                        <b>Masalah/Hambatan: </b>{{ cat.masalah_hambatan|default:'-' }}
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-link" href="{{ cat.tautan_dakung }}">Lihat</a>
+                    </td>
+                    <td>
+                        <div class="d-flex flex-wrap">
+                            <a class="btn btn-sm btn-secondary m-1" href="{% url 'logbook_ppnpn:ubah_catatan' cat.pk %}">Ubah</a>
+                            <form class="m-1" method="POST" action="{% url 'logbook_ppnpn:hapus_catatan' cat.pk %}" onsubmit="return confirm('Yakin hapus entri nomor {{ forloop.counter }}?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    Anda belum membuat catatan harian
+    {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="tambahCatatanModal" tabindex="-1">
+    </div>
+
+</div>
+{% endblock %}
+
+{% block body_add_bl %}
+<script>
+    $(document).ready(function () {
+        $('#datatable').DataTable({
+            pageLength: 50,
+            // lengthMenu: [100, 50, 25, 10],
+            // order: [[0, asc]],
+            searching: true,
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.0.3/i18n/id.json',
+            },
+            paging: true,
+            "columnDefs": [
+                {
+                    "orderable": false,
+                    "targets": -1 // -1 refers to the last column
+                }
+            ]
+            // initComplete: function () {
+            //     this.api()
+            //         .columns()
+            //         .every(function () {
+            //             let column = this;
+            //             let title = column.footer().textContent;
+
+            //             // Create input element
+            //             let input = document.createElement('input');
+            //             input.placeholder = title;
+            //             column.footer().replaceChildren(input);
+
+            //             // Event listener for user input
+            //             input.addEventListener('keyup', () => {
+            //                 if (column.search() !== this.value) {
+            //                     column.search(input.value).draw();
+            //                 }
+            //             });
+            //         });
+            // }
+        });
+    });
+</script>
+{% endblock %}
