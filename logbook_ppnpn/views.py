@@ -19,7 +19,7 @@ def home(request):
     # redir ke laman validasi jika ASN
     if request.session.get("jenis_pegawai", False) == "asn":
         return redirect("logbook_ppnpn:list_validasi")
-    
+
     nippnpn = request.session.get("ni", "-")
     ppnpn = PPNPN.objects.using("master").filter(nomor_induk=nippnpn).get()
     catatans = Catatan.objects.filter(nippnpn=nippnpn).order_by("-tanggal")
@@ -96,7 +96,6 @@ def hapus_catatan(request, id_catatan):
     return redirect("logbook_ppnpn:home")
 
 
-@login_required
 def semua_logbook(request):
     """Laman nama-nama PPNPN untuk melihat logbook mereka."""
     ppnpns = PPNPN.objects.using("master").all()
@@ -132,7 +131,6 @@ def semua_logbook(request):
     return render(request, "logbook_ppnpn/semua_logbook.html", context)
 
 
-@login_required
 def detail_logbook(request, id_ppnpn):
     ppnpn = PPNPN.objects.using("master").filter(nomor_induk=id_ppnpn).get()
     catatans = Catatan.objects.filter(nippnpn=id_ppnpn).order_by("-tanggal")
