@@ -15,6 +15,10 @@
                     <th>NI PPNPN</th>
                     <td>: <code>{{ ppnpn.nomor_induk }}</code></td>
                 </tr>
+                <tr>
+                    <th>Timker Penugasan</th>
+                    <td>: Timker {{ ppnpn.nomor_timker|default:'-' }}</td>
+                </tr>
             </tbody>
         </table>
         <a class="btn btn-kemkes" role="button" href="{% url 'logbook_ppnpn:buat_catatan' %}">
@@ -28,7 +32,7 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Tanggal <span style="font-size: 70%;">(y-m-d)</span></th>
+                    <th>Tanggal <span style="font-size: 70%;">(YMD)</span></th>
                     <th>Rincian</th>
                     <th>Link Bukti</th>
                     <th>Tindakan</th>

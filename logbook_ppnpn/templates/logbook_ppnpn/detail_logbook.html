@@ -16,16 +16,16 @@
                     <td>: <code>{{ ppnpn.nomor_induk }}</code></td>
                 </tr>
                 <tr>
-                    <th>Timker</th>
-                    <td>: {{ ppnpn.nomor_timker|default:'-' }}</td>
+                    <th>Timker Penugasan</th>
+                    <td>: Timker {{ ppnpn.nomor_timker|default:'-' }}</td>
                 </tr>
             </tbody>
         </table>
-        {% comment %}
+        {% if request.session.ni == ppnpn.nomor_induk %}
         <a class="btn btn-kemkes" role="button" href="{% url 'logbook_ppnpn:buat_catatan' %}">
             Tambah Catatan
         </a>
-        {% endcomment %}
+        {% endif %}
     </div>
 
     {% if catatans %}
@@ -34,7 +34,7 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Tanggal <span style="font-size: 70%;">(y-m-d)</span></th>
+                    <th>Tanggal <span style="font-size: 70%;">(YMD)</span></th>
                     <th>Rincian</th>
                     <th>Link Bukti</th>
                     <th>Status Validasi</th>

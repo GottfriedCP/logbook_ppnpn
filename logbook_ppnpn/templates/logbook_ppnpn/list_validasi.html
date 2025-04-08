@@ -13,12 +13,8 @@
                 <tr>
                     <th>No.</th>
                     <th>Nama</th>
-                    <th>Tanggal (y-m-d)</th>
+                    <th>Tanggal (YMD)</th>
                     <th>Rincian</th>
-                    {% comment %}
-                    <th>Progress</th>
-                    <th>Masalah/Hambatan</th>
-                    {% endcomment %}
                     <th>Link Bukti</th>
                     <th>Tindakan</th>
                 </tr>
@@ -34,10 +30,6 @@
                         <b>Progress: </b>{{ cat.progress|default:'-' }}<br>
                         <b>Masalah/Hambatan: </b>{{ cat.masalah_hambatan|default:'-' }}
                     </td>
-                    {% comment %}
-                    <td>{{ cat.progress }}</td>
-                    <td>{{ cat.masalah_hambatan }}</td>
-                    {% endcomment %}
                     <td>
                         <a class="btn btn-sm btn-link" href="{{ cat.tautan_dakung }}">Lihat</a>
                     </td>
