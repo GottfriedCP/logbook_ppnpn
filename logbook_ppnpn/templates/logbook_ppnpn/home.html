@@ -49,7 +49,9 @@
                         <b>Masalah/Hambatan: </b>{{ cat.masalah_hambatan|default:'-' }}
                     </td>
                     <td>
+                        {% if cat.tautan_dakung %}
                         <a class="btn btn-sm btn-link" href="{{ cat.tautan_dakung }}">Lihat</a>
+                        {% else %}-{% endif %}
                     </td>
                     <td>
                         <div class="d-flex flex-wrap">
