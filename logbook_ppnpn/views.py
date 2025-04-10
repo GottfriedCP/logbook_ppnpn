@@ -203,7 +203,6 @@ def login_view(request):
     if request.method == "POST":
         nip = request.POST.get("nip")
         password = request.POST.get("password")
-        # utk saat ini, password adalah nip
         password_ok = nip == password
         if is_asn(nip):
             ni_exists = ASN.objects.using("master").filter(nip=nip).exists()
