@@ -14,6 +14,8 @@ from models_master import ASN, PPNPN
 
 from helper.utils import is_asn
 
+JUMLAH_HARI_KERJA = 22
+
 
 @login_required
 def home(request):
@@ -116,7 +118,9 @@ def semua_logbook(request):
             .count()
         )
         capaian_sekarang = (
-            Decimal(str(catatans_count)) / Decimal("20") * Decimal("100.00")
+            Decimal(str(catatans_count))
+            / Decimal(str(JUMLAH_HARI_KERJA))
+            * Decimal("100.00")
         ).quantize(Decimal("00.00"), rounding=ROUND_HALF_UP)
         d["capaian_sekarang"] = capaian_sekarang
         # hitung capaian bulan sebelumnya
@@ -129,7 +133,9 @@ def semua_logbook(request):
             .count()
         )
         capaian_lampau = (
-            Decimal(str(catatans_count)) / Decimal("20") * Decimal("100.00")
+            Decimal(str(catatans_count))
+            / Decimal(str(JUMLAH_HARI_KERJA))
+            * Decimal("100.00")
         ).quantize(Decimal("00.00"), rounding=ROUND_HALF_UP)
         d["capaian_lampau"] = capaian_lampau
         ppnpn_list.append(d)
