@@ -20,11 +20,14 @@ class Catatan(TimestampedModel):
     nippnpn = models.CharField(max_length=20, null=False, blank=False)
     tanggal = models.DateField(blank=False, null=False)
     rincian = models.TextField()
-    tautan_dakung = models.URLField(max_length=2000, null=True, blank=True)
-    progress = models.TextField(blank=True, null=True)
-    masalah_hambatan = models.TextField(
-        blank=True, null=True, verbose_name="Masalah atau hambatan"
+    tautan_dakung = models.URLField(
+        max_length=2000,
+        null=True,
+        blank=True,
+        verbose_name="Link Data Dukung",
     )
+    progress = models.TextField(blank=True, null=True, verbose_name="Progress")
+    masalah_hambatan = models.TextField(blank=True, null=True, verbose_name="Masalah atau hambatan")
     kriteria = models.CharField(choices=KRITERIA_CHOICES, default=BIASA, max_length=20)
     verified = models.BooleanField(default=False)
     verified_at = models.DateTimeField(blank=True, null=True)

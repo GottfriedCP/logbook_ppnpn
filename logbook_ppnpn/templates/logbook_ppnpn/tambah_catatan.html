@@ -17,8 +17,9 @@
             </tbody>
         </table>
     </div>
-    <form method="POST" action="{% if ubah %}{% url 'logbook_ppnpn:ubah_catatan' catatan_id %}{% else %}{% url 'logbook_ppnpn:buat_catatan' %}{% endif %}">
-        <h1 class="fs-2">{% if ubah %}Ubah{% else %}Tambah{% endif %} Catatan Harian PPNPN</h1>
+    <h1 class="fs-2 mb-4">{% if ubah %}Ubah{% else %}Tambah{% endif %} Catatan Harian PPNPN</h1>
+    <span style="color: red;">*</span> wajib diisi
+    <form class="my-3" method="POST" action="{% if ubah %}{% url 'logbook_ppnpn:ubah_catatan' catatan_id %}{% else %}{% url 'logbook_ppnpn:buat_catatan' %}{% endif %}">
         {% csrf_token %}
         {% bootstrap_form form %}
         <div class=" d-grid gap-2">
@@ -49,6 +50,12 @@
             isRTL: false,
             showMonthAfterYear: false,
             yearSuffix: ""
+        });
+        $('input[required], textarea[required]').each(function() {
+            var label = $('label[for="' + $(this).attr('id') + '"]');
+            if (label.length) {
+                label.append('<span style="color: red;">*</span>');
+            }
         });
         $('label.form-label').css('font-weight', '600');
         $('#id_tautan_dakung').attr('placeholder', 'Contoh: https://drive.google.com/file/d/.......');
