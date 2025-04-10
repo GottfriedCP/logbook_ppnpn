@@ -23,12 +23,8 @@
                 <td><code>{{ p.ni }}</code></td>
                 <td>{{ p.nama }}</td>
                 <td>{{ p.timker|default:'-' }}</td>
-                {% comment %}
-                <td>{{ p.capaian_sekarang }}</td>
-                <td>{{ p.capaian_lampau }}</td>
-                {% endcomment %}
-                <td>-</td>
-                <td>-</td>
+                <td>{{ p.capaian_sekarang|default:'0' }}</td>
+                <td>{{ p.capaian_lampau|default:'0' }}</td>
                 <td>
                     <div>
                         <a role="button" class="btn btn-sm btn-kemkes" href="{% url 'logbook_ppnpn:detail_logbook' p.ni %}">Lihat Catatan Harian</a>

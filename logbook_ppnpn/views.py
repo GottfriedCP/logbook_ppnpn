@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import TruncDate
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
@@ -107,18 +108,26 @@ def semua_logbook(request):
         d["timker"] = p.nomor_timker
         # hitung capaian bulan ini
         bulan_ini = timezone.now().month
-        catatans_count = Catatan.objects.filter(
-            nippnpn=p.nomor_induk, tanggal__month=bulan_ini
-        ).count()
+        catatans_count = (
+            Catatan.objects.filter(nippnpn=p.nomor_induk, tanggal__month=bulan_ini)
+            .annotate(tanggal_unik=TruncDate("tanggal"))
+            .values("tanggal_unik")
+            .distinct()
+            .count()
+        )
         capaian_sekarang = (
             Decimal(str(catatans_count)) / Decimal("20") * Decimal("100.00")
         ).quantize(Decimal("00.00"), rounding=ROUND_HALF_UP)
         d["capaian_sekarang"] = capaian_sekarang
         # hitung capaian bulan sebelumnya
         bulan_lalu = (timezone.now().month - 2) % 12 + 1
-        catatans_count = Catatan.objects.filter(
-            nippnpn=p.nomor_induk, tanggal__month=bulan_lalu
-        ).count()
+        catatans_count = (
+            Catatan.objects.filter(nippnpn=p.nomor_induk, tanggal__month=bulan_lalu)
+            .annotate(tanggal_unik=TruncDate("tanggal"))
+            .values("tanggal_unik")
+            .distinct()
+            .count()
+        )
         capaian_lampau = (
             Decimal(str(catatans_count)) / Decimal("20") * Decimal("100.00")
         ).quantize(Decimal("00.00"), rounding=ROUND_HALF_UP)
