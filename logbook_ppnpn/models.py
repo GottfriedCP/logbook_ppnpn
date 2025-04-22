@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class TimestampedModel(models.Model):
@@ -27,10 +28,24 @@ class Catatan(TimestampedModel):
         verbose_name="Link Data Dukung",
     )
     progress = models.TextField(blank=True, null=True, verbose_name="Progress")
-    masalah_hambatan = models.TextField(blank=True, null=True, verbose_name="Masalah atau hambatan")
+    masalah_hambatan = models.TextField(
+        blank=True, null=True, verbose_name="Masalah atau hambatan"
+    )
     kriteria = models.CharField(choices=KRITERIA_CHOICES, default=BIASA, max_length=20)
     verified = models.BooleanField(default=False)
     verified_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         ordering = ["nippnpn", "-created_at"]
+
+    def verifikasi(self, *args, **kwargs):
+        """Tandai catatan ini sudah diverifikasi."""
+        self.verified = True
+        self.verified_at = timezone.now()
+        super().save(*args, **kwargs)
+
+    def unverifikasi(self, *args, **kwargs):
+        """Tandai catatan ini belum diverifikasi."""
+        self.verified = False
+        self.verified_at = None
+        super().save(*args, **kwargs)
