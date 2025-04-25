@@ -101,7 +101,7 @@ def hapus_catatan(request, id_catatan):
 
 def semua_logbook(request):
     """Laman nama-nama PPNPN untuk melihat logbook mereka."""
-    ppnpns = PPNPN.objects.using("master").all()
+    ppnpns = PPNPN.objects.using("master").filter(aktif=True)
     # untuk PPNPN, tampilkan hanya dia saja di daftar
     if request.session.get("jenis_pegawai", False) == "ppnpn":
         ni_ppnpn = request.session.get("ni")
