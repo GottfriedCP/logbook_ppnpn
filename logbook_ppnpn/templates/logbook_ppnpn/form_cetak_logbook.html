@@ -13,19 +13,19 @@
         {% csrf_token %}
         <div class="mb-3">
             <label for="dariTgl" class="form-label">Dari tanggal</label>
-            <input type="text" class="form-control" id="dariTgl" name="dariTgl">
+            <input required type="text" class="form-control" id="dariTgl" name="dariTgl">
         </div>
         <div class="mb-3">
             <label for="hinggaTgl" class="form-label">Hingga tanggal</label>
-            <input type="text" class="form-control" id="hinggaTgl" name="hinggaTgl">
+            <input required type="text" class="form-control" id="hinggaTgl" name="hinggaTgl">
         </div>
         <div class="mb-3">
             <label for="unitKerja" class="form-label">Unit Kerja</label>
-            <input type="text" class="form-control" id="unitKerja" name="unitKerja" placeholder="Pusat Kebijakan Upaya Kesehatan">
+            <input required type="text" class="form-control" id="unitKerja" name="unitKerja" placeholder="Pusat Kebijakan Upaya Kesehatan">
         </div>
         <div class="mb-3">
             <label for="timKerja" class="form-label">Tim Kerja</label>
-            <input type="text" class="form-control" id="timKerja" name="timKerja" placeholder="Tim Kerja Bla Bla Bla">
+            <input required type="text" class="form-control" id="timKerja" name="timKerja" placeholder="Tim Kerja Bla Bla Bla">
         </div>
         <div class="mb-2">Nama Ketua Tim</div>
         {% for katim in katims %}
