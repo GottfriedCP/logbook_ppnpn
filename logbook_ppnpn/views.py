@@ -121,6 +121,7 @@ def cetak_logbook(request):
             tanggal__gte=tanggal_dari_parsed,
             tanggal__lte=tanggal_hingga_parsed,
         )
+        catatans = catatans.order_by("tanggal")
         context = {
             "katim": katim,
             "catatans": catatans,
