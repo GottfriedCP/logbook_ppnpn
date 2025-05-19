@@ -50,7 +50,14 @@
                 .datepicker({
                     defaultDate: "+1w",
                     changeMonth: true,
-                    numberOfMonths: 2
+                    numberOfMonths: 2,
+                    monthNames: [ "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                    "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember" ],
+                    monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
+                    "Jul", "Agus", "Sep", "Okt", "Nop", "Des" ],
+                    dayNames: [ "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu" ],
+                    dayNamesShort: [ "Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab" ],
+                    dayNamesMin: [ "Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb" ],
                 })
                 .on("change", function () {
                     to.datepicker("option", "minDate", getDate(this));
@@ -58,7 +65,14 @@
             to = $("#hinggaTgl").datepicker({
                 defaultDate: "+1w",
                 changeMonth: true,
-                numberOfMonths: 2
+                numberOfMonths: 2,
+                monthNames: [ "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember" ],
+                monthNamesShort: [ "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
+                "Jul", "Agus", "Sep", "Okt", "Nop", "Des" ],
+                dayNames: [ "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu" ],
+                dayNamesShort: [ "Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab" ],
+                dayNamesMin: [ "Mg", "Sn", "Sl", "Rb", "Km", "Jm", "Sb" ],
             })
                 .on("change", function () {
                     from.datepicker("option", "maxDate", getDate(this));
