@@ -1,0 +1,82 @@
+{% extends 'BASE.html' %}
+{% load static django_bootstrap5 %}
+
+{% block title_bl %}Cetak{% endblock %}
+
+{% block head_bl %}
+{% endblock %}
+
+{% block body_bl %}
+<div class="container">
+    <h1>Cetak Logbook</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="dariTgl" class="form-label">Dari tanggal</label>
+            <input type="text" class="form-control" id="dariTgl" name="dariTgl">
+        </div>
+        <div class="mb-3">
+            <label for="hinggaTgl" class="form-label">Hingga tanggal</label>
+            <input type="text" class="form-control" id="hinggaTgl" name="hinggaTgl">
+        </div>
+        <div class="mb-3">
+            <label for="unitKerja" class="form-label">Unit Kerja</label>
+            <input type="text" class="form-control" id="unitKerja" name="unitKerja" placeholder="Pusat Kebijakan Upaya Kesehatan">
+        </div>
+        <div class="mb-3">
+            <label for="timKerja" class="form-label">Tim Kerja</label>
+            <input type="text" class="form-control" id="timKerja" name="timKerja" placeholder="Tim Kerja Bla Bla Bla">
+        </div>
+        <div class="mb-2">Nama Ketua Tim</div>
+        {% for katim in katims %}
+        <div class="form-check">
+            <input required value="{{ katim.pk }}" class="form-check-input" type="radio" name="namaKatim" id="namaKatim{{ forloop.counter }}">
+            <label class="form-check-label" for="namaKatim{{ forloop.counter }}">
+                {{ katim.nama }}
+            </label>
+        </div>
+        {% endfor %}
+        <button type="submit" class="my-4 btn btn-kemkes">Cetak</button>
+    </form>
+    {% bootstrap_messages %}
+</div>
+{% endblock %}
+
+{% block body_add_bl %}
+<script>
+    function initDariHingga() {
+        var dateFormat = "mm/dd/yy",
+            from = $("#dariTgl")
+                .datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    numberOfMonths: 2
+                })
+                .on("change", function () {
+                    to.datepicker("option", "minDate", getDate(this));
+                }),
+            to = $("#hinggaTgl").datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 2
+            })
+                .on("change", function () {
+                    from.datepicker("option", "maxDate", getDate(this));
+                });
+
+        function getDate(element) {
+            var date;
+            try {
+                date = $.datepicker.parseDate(dateFormat, element.value);
+            } catch (error) {
+                date = null;
+            }
+
+            return date;
+        }
+    };
+    $(document).ready(function () {
+        initDariHingga();
+    });
+</script>
+{% endblock %}

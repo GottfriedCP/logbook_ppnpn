@@ -5,6 +5,7 @@ from django.db.models.functions import TruncDate
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
+from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
 
 from .forms import CatatanForm
@@ -97,6 +98,43 @@ def hapus_catatan(request, id_catatan):
         cat.delete()
         messages.success(request, f"Entri berhasil dihapus")
     return redirect("logbook_ppnpn:home")
+
+
+@login_required
+def cetak_logbook(request):
+    if request.method == "POST":
+        katim_id = request.POST.get("namaKatim")
+        katim = get_object_or_404(ASN.objects.using("master"), id=katim_id)
+        tanggal_dari = request.POST.get("dariTgl")
+        tanggal_dari_parsed = datetime.strptime(tanggal_dari, "%m/%d/%Y")
+        tanggal_dari_parsed = timezone.make_aware(tanggal_dari_parsed)
+        tanggal_hingga = request.POST.get("hinggaTgl")
+        tanggal_hingga_parsed = datetime.strptime(tanggal_hingga, "%m/%d/%Y")
+        tanggal_hingga_parsed = timezone.make_aware(tanggal_hingga_parsed)
+        nippnpn = request.session.get("ni", "-")
+        ppnpn = PPNPN.objects.using("master").filter(nomor_induk=nippnpn).get()
+        unit_kerja = request.POST.get("unitKerja")
+        tim_kerja = request.POST.get("timKerja")
+
+        catatans = Catatan.objects.filter(
+            nippnpn=ppnpn.nomor_induk,
+            tanggal__gte=tanggal_dari_parsed,
+            tanggal__lte=tanggal_hingga_parsed,
+        )
+        context = {
+            "katim": katim,
+            "catatans": catatans,
+            "ppnpn": ppnpn,
+            "unit_kerja": unit_kerja,
+            "tim_kerja": tim_kerja,
+        }
+        return render(request, "logbook_ppnpn/cetak_logbook.html", context)
+    katims = ASN.objects.using("master").filter(level=1)
+    context = {
+        "page_title": "home",
+        "katims": katims,
+    }
+    return render(request, "logbook_ppnpn/form_cetak_logbook.html", context)
 
 
 def semua_logbook(request):
