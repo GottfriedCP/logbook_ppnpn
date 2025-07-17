@@ -123,6 +123,7 @@
                 <th>Hari, Tanggal</th>
                 <th>Uraian Kegiatan</th>
                 <th>Keterangan</th>
+                <th>Pranala bukti</th>
             </tr>
         </thead>
         <tbody>
@@ -132,6 +133,7 @@
                 <td>{{ c.tanggal|date:'l, j F Y' }}</td>
                 <td>{{ c.rincian }}</td>
                 <td></td>
+                <td>{{ c.tautan_dakung|default:'-' }}</td>
             </tr>
             {% endfor %}
         </tbody>
